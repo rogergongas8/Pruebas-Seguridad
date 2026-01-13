@@ -1,0 +1,127 @@
+Ejercicio1 – 1 punto
+
+Probar los dos códigos proporcionados y realiza capturas de pantalla de la ejecución
+
+Código sin paralelismo:
+
+# explicación 
+
+
+
+
+
+Código con paralelismo: 
+
+# explicación
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Crea el MainRunnable.java del artículo
+
+Codigo con paralelismo, pero usando .run() el cual lo hace secuencial, lo que sería sin paralelismo:
+
+# explicación
+
+
+
+Ejercicio2: Prueba el código proporcionado. Responde a las preguntas realizadas y pon capturas de pantalla – 2 puntos
+
+¿Qué pasa si comento el s1.join() y el s2.join()? ¿Por qué crees que pasa?
+
+¿Saca por pantalla siempre el “[Lento] empieza”?
+
+¿En la parte de DEMO SLEEP sale siempre el mismo orden?
+
+¿si comento “p2.setPriority(Thread.NORM_PRIORITY);” del código DemoSleepYieldPriority me queda igual?
+
+En la salida del DEMO PRIORITY casi no se ve diferencia entre hilos con diferentes prioridades, ¿por qué?
+
+Ejercicio3: Prueba el código proporcionado. Responde a las preguntas realizadas y pon capturas de pantalla – 2 puntos
+
+Analiza el código “03-Demonios/DaemonBasico.java” e indica que ocurre si comento la línea de setDaemon(true)
+
+Analiza y ejecuta el código “03-Demonios/DaemonHerencia.java” y explica la relación entre los hilos padres y sus hilos hijos
+
+¿Qué pasa si ejecutas un setDaemon después del start()?
+
+Ejercicio3: Prueba el código proporcionado. Responde a las preguntas realizadas y pon capturas de pantalla. Partiendo del código “04-GruposHilos\EjemploGruposHilos.java” – 3 puntos
+
+¿Qué pasa si pongo true en enumerate?
+
+¿Aparecen ahora hilos que antes no aparecían?
+
+¿Ves al Hilo-C (hijo) en la lista de hilos de grupoPadre?
+
+¿Qué valor (true/false) usarías si quisieras listar también los hilos de los subgrupos?
+
+¿Qué ocurre si comentas el Thread.sleep(200) antes de la info?
+
+¿Alguna vez te sale 0 hilos activos aunque claramente se están creando hilos?
+
+¿Por qué crees que pasa?
+
+¿Qué te enseña esto sobre el hecho de que los hilos pueden empezar y terminar muy rápido?
+
+¿Qué pasa si creas un hilo sin especificar grupo?
+
+Thread hiloDefault = new Thread(new Tarea("Tarea Default"), "Hilo-Default");
+
+hiloDefault.start();
+
+¿A qué grupo pertenece Hilo-Default?
+
+Pista: usa hiloDefault.getThreadGroup().getName().
+
+¿Aparece en la enumeración de grupoPadre?
+
+¿Qué grupo está usando por defecto Java para los hilos creados en main?
+
+Ejercicio4: Prueba el código proporcionado. Responde a las preguntas realizadas y pon capturas de pantalla. Ejecuta el código SincronizacionContador.java – 2 puntos
+
+¿Qué deberías ver?
+
+CON synchronized (como está ahora):
+
+El valor real casi siempre será exactamente 2_000_000.
+
+SIN synchronized (si descomentas la primera versión de incrementar() y comentas la synchronized):
+
+El valor real suele ser menor que el esperado: 1.8M, 1.9M, 1.7M… y cambia de una ejecución a otra.
+
+Eso son condiciones de carrera.
+
+Explica el motivo
+
+Añade más hilos y analízalo
+
+Ejercicio5: Prueba el código proporcionado. Responde a las preguntas realizadas y pon capturas de pantalla. Ejecuta el código “05-Sincronizacion /ProductorConsumidorSimple.java” – 2 puntos
+
+¿Es la clase Buffer un hilo?
+
+¿Cuál es el objetivo de la variable dato?
+
+¿Qué ocurre si elimino el synchronized de tomar() y luego lo ejecuto?
+
+Juega con las 4 posibles combinaciones de los valores de sleep y analiza qué ocurre.
+
+Cambia los notifyAll() por notify() analiza lo que está sucediendo.
+
+Video. En el video se ha de mostrar y explicar cómo funciona. Un video por ejercicio – 5 puntos
+
+Si da tiempo se explicará un proyecto a realizar
