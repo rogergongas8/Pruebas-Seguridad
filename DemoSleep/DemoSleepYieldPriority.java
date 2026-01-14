@@ -13,16 +13,16 @@ public class DemoSleepYieldPriority {
 
         @Override
         public void run() {
-            System.out.println("[" + name + "] empieza");
+            System.out.println("RGG - [" + name + "] empieza");
             for (int i = 1; i <= 5; i++) {
-                System.out.println("[" + name + "] paso " + i);
+                System.out.println("RGG - [" + name + "] paso " + i);
                 try {
                     Thread.sleep(delay); // se duerme 'delay' milisegundos
                 } catch (InterruptedException e) {
                     System.out.println("[" + name + "] interrumpido");
                 }
             }
-            System.out.println("[" + name + "] termina");
+            System.out.println("RGG - [" + name + "] termina");
         }
     }
 
@@ -38,19 +38,19 @@ public class DemoSleepYieldPriority {
 
         @Override
         public void run() {
-            System.out.println("{" + name + "} empieza");
+            System.out.println("RGG - {" + name + "} empieza");
             for (int i = 1; i <= 20; i++) {
-                System.out.println("{" + name + "} i=" + i);
+                System.out.println("RGG - {" + name + "} i=" + i);
                 // Hacemos algo de "trabajo" tonto
                 for (int j = 0; j < 1_000_00; j++) {
                     // ocupamos CPU
                 }
                 if (useYield && i % 3 == 0) {
-                    System.out.println("{" + name + "} hace yield()");
+                    System.out.println("RGG - {" + name + "} hace yield()");
                     Thread.yield(); // sugiere ceder la CPU
                 }
             }
-            System.out.println("{" + name + "} termina");
+            System.out.println("RGG - {" + name + "} termina");
         }
     }
 
@@ -69,11 +69,11 @@ public class DemoSleepYieldPriority {
             for (int i = 0; i < 50_000_000; i++) {
                 sum += i;
                 if (i % 10_000_000 == 0) {
-                    System.out.println("[" + name + "] i=" + i);
+                    System.out.println("RGG - [" + name + "] i=" + i);
                 }
             }
             long end = System.currentTimeMillis();
-            System.out.println("[" + name + "] termina en " + (end - start) + " ms (sum=" + sum + ")");
+            System.out.println("RGG - [" + name + "] termina en " + (end - start) + " ms (sum=" + sum + ")");
         }
     }
 
@@ -82,18 +82,18 @@ public class DemoSleepYieldPriority {
         // DEMO 1: sleep()
         // =============================
         System.out.println("======= DEMO SLEEP =======");
-        Thread s1 = new Thread(new SleepTask("Lento", 400)); // duerme más
-        Thread s2 = new Thread(new SleepTask("Rápido", 200)); // duerme menos
+        Thread s1 = new Thread(new SleepTask("RGG - Lento", 400)); // duerme más
+        Thread s2 = new Thread(new SleepTask("RGG - Rápido", 200)); // duerme menos
         s1.start();
         s2.start();
-        s1.join();
-        s2.join();
+        // s1.join();
+        // s2.join();
         // =============================
         // DEMO 2: yield()
         // =============================
         System.out.println("\n======= DEMO YIELD =======");
-        Thread y1 = new Thread(new YieldTask("SinYield", false));
-        Thread y2 = new Thread(new YieldTask("ConYield", true));
+        Thread y1 = new Thread(new YieldTask("RGG - SinYield", false));
+        Thread y2 = new Thread(new YieldTask("RGG - ConYield", true));
         y1.start();
         y2.start();
         y1.join();
@@ -102,22 +102,22 @@ public class DemoSleepYieldPriority {
         // DEMO 3: setPriority()
         // =============================
         System.out.println("\n======= DEMO PRIORITY =======");
-        Thread p1 = new Thread(new PriorityTask("Prioridad_Baja"));
-        Thread p2 = new Thread(new PriorityTask("Prioridad_Media"));
-        Thread p3 = new Thread(new PriorityTask("Prioridad_Alta"));
+        Thread p1 = new Thread(new PriorityTask("RGG - Prioridad_Baja"));
+        Thread p2 = new Thread(new PriorityTask("RGG - Prioridad_Media"));
+        Thread p3 = new Thread(new PriorityTask("RGG - Prioridad_Alta"));
         // Prioridades (1 a 10)
         p1.setPriority(Thread.MIN_PRIORITY); // 1
-        p2.setPriority(Thread.NORM_PRIORITY); // 5
+        // p2.setPriority(Thread.NORM_PRIORITY); // 5
         p3.setPriority(Thread.MAX_PRIORITY); // 10
-        System.out.println("Prioridad_Baja = " + p1.getPriority());
-        System.out.println("Prioridad_Media = " + p2.getPriority());
-        System.out.println("Prioridad_Alta = " + p3.getPriority());
+        System.out.println("RGG - Prioridad_Baja = " + p1.getPriority());
+        System.out.println("RGG - Prioridad_Media = " + p2.getPriority());
+        System.out.println("RGG - Prioridad_Alta = " + p3.getPriority());
         p1.start();
         p2.start();
         p3.start();
         p1.join();
         p2.join();
         p3.join();
-        System.out.println("\nFin de todas las demos");
+        System.out.println("\nRGG - Fin de todas las demos");
     }
 }
