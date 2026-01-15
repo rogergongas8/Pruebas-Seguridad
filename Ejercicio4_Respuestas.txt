@@ -1,0 +1,161 @@
+================================================================================
+EJERCICIO 4: GRUPOS DE HILOS - 3 PUNTOS
+================================================================================
+
+1. ¿Qué pasa si pongo true en enumerate?
+--------------------------------------------------------------------------------
+
+IMPORTANTE: En el código original, activeCount() YA incluye los hilos de los 
+subgrupos, por eso el array tiene tamaño 3 (Hilo-A, Hilo-B y Hilo-C).
+
+Sin embargo, el parámetro de enumerate() controla qué hilos se copian al array:
+
+- enumerate(array, false): Solo copia hilos que pertenecen DIRECTAMENTE al grupo
+- enumerate(array, true): Copia hilos del grupo Y de todos sus subgrupos
+
+En este caso específico, como el array se dimensiona con activeCount() que ya 
+cuenta 3 hilos, ambos casos funcionan. Pero la diferencia se vería si usáramos 
+un array más pequeño o si contáramos manualmente.
+
+[CAPTURA 1 - Con false]
+[CAPTURA 2 - Con true]
+
+
+2. ¿Aparecen ahora hilos que antes no aparecían?
+--------------------------------------------------------------------------------
+
+CORRECCIÓN: En el código tal como está, el Hilo-C aparece en AMBOS casos 
+(con true y con false) porque:
+
+1. activeCount() devuelve 3 (incluye subgrupos)
+2. El array tiene tamaño 3
+3. enumerate() puede copiar hasta 3 hilos
+
+La diferencia real sería visible si:
+- Usáramos un array de tamaño fijo menor (ej: Thread[2])
+- O si mostráramos el NÚMERO de hilos que enumerate() realmente encontró
+
+Respuesta técnica: Con false debería encontrar solo 2 hilos (Hilo-A y Hilo-B), 
+con true debería encontrar 3 hilos (Hilo-A, Hilo-B y Hilo-C).
+
+
+3. ¿Ves al Hilo-C (hijo) en la lista de hilos de grupoPadre?
+--------------------------------------------------------------------------------
+
+CORRECCIÓN IMPORTANTE: 
+
+En la ejecución actual SÍ aparece el Hilo-C en ambos casos porque activeCount() 
+dimensiona el array con 3 posiciones.
+
+La respuesta TEÓRICA correcta es:
+- Con enumerate(array, false): NO debería aparecer Hilo-C (solo hilos directos)
+- Con enumerate(array, true): SÍ debería aparecer Hilo-C (incluye subgrupos)
+
+El Hilo-C pertenece al subgrupo "Grupo Hijo", no directamente a "Grupo Padre".
+
+Para ver la diferencia real, habría que verificar el valor de retorno de 
+enumerate() que indica cuántos hilos realmente encontró.
+
+
+4. ¿Qué valor (true/false) usarías si quisieras listar también los hilos de 
+   los subgrupos?
+--------------------------------------------------------------------------------
+
+Usaría true:
+    grupoPadre.enumerate(listaHilos, true)
+
+- false = solo hilos que pertenecen DIRECTAMENTE al grupo
+- true = hilos del grupo + todos los subgrupos (recursivo)
+
+
+
+
+5. ¿Qué ocurre si comentas el Thread.sleep(200) antes de la info?
+--------------------------------------------------------------------------------
+
+CÓDIGO ORIGINAL (línea 55):
+    Thread.sleep(200);
+
+CÓDIGO MODIFICADO:
+    // Thread.sleep(200);
+
+[CAPTURA 3]
+
+Resultado:
+- A veces sale "0 hilos activos" aunque acabamos de crear y arrancar los hilos
+- Los hilos pueden terminar ANTES de que se ejecute activeCount()
+- La información de grupos puede ser inconsistente
+
+
+6. ¿Alguna vez te sale 0 hilos activos aunque claramente se están creando hilos?
+--------------------------------------------------------------------------------
+
+Sí, cuando se comenta el Thread.sleep(200), a veces sale 0 hilos activos.
+
+
+7. ¿Por qué crees que pasa?
+--------------------------------------------------------------------------------
+
+Porque los hilos son muy rápidos y pueden:
+1. Arrancar (start())
+2. Ejecutar su tarea completa
+3. Terminar
+
+Todo esto ANTES de que el hilo main ejecute activeCount().
+
+Sin el sleep(200), no hay garantía de que los hilos sigan vivos cuando 
+preguntamos cuántos están activos.
+
+
+8. ¿Qué te enseña esto sobre el hecho de que los hilos pueden empezar y 
+   terminar muy rápido?
+--------------------------------------------------------------------------------
+
+Enseña que:
+- Los hilos son asíncronos y no predecibles en timing
+- No podemos asumir que un hilo estará vivo solo porque lo acabamos de crear
+- Necesitamos sincronización (join, sleep, locks) si queremos coordinar hilos
+- activeCount() es una "instantánea" del momento, no una garantía
+- El scheduling de hilos es responsabilidad del SO y puede variar
+
+
+9. ¿Qué pasa si creas un hilo sin especificar grupo?
+--------------------------------------------------------------------------------
+
+CÓDIGO AÑADIDO:
+    Thread hiloDefault = new Thread(new Tarea("Tarea Default"), "Hilo-Default");
+    hiloDefault.start();
+
+[CAPTURA 4]
+
+
+10. ¿A qué grupo pertenece Hilo-Default?
+--------------------------------------------------------------------------------
+
+Código para verificar:
+    System.out.println(hiloDefault.getThreadGroup().getName());
+
+Resultado: "main"
+
+El hilo pertenece al grupo "main" (el grupo del hilo que lo creó).
+
+
+11. ¿Aparece en la enumeración de grupoPadre?
+--------------------------------------------------------------------------------
+
+NO, no aparece en la enumeración de grupoPadre porque pertenece al grupo 
+"main", no a "Grupo Padre".
+
+
+12. ¿Qué grupo está usando por defecto Java para los hilos creados en main?
+--------------------------------------------------------------------------------
+
+Java usa el grupo "main" por defecto.
+
+Regla: Cuando creas un hilo sin especificar ThreadGroup, el hilo hereda el 
+grupo del hilo que lo está creando (el hilo padre).
+
+Como main() se ejecuta en el hilo "main" que pertenece al grupo "main", 
+todos los hilos creados sin especificar grupo pertenecerán al grupo "main".
+
+================================================================================

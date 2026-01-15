@@ -15,18 +15,18 @@ public class EjemploGruposHilos {
             ThreadGroup grupo = hiloActual.getThreadGroup();
             for (int i = 1; i <= 5; i++) {
                 System.out.println(
-                        "[" + grupo.getName() + "] "
+                        "[" + "RGG-" + grupo.getName() + "] "
                                 + hiloActual.getName()
                                 + " - " + nombreTarea
                                 + " - iteración " + i);
                 try {
                     Thread.sleep(400); // un poco de tiempo para ver el intercalado
                 } catch (InterruptedException e) {
-                    System.out.println(hiloActual.getName() + " interrumpido");
+                    System.out.println("RGG - " + hiloActual.getName() + " interrumpido");
                     return;
                 }
             }
-            System.out.println("[" + grupo.getName() + "] " + hiloActual.getName() + " ha terminado.");
+            System.out.println("RGG - " + grupo.getName() + "] " + hiloActual.getName() + " ha terminado.");
         }
     }
 
@@ -34,9 +34,9 @@ public class EjemploGruposHilos {
         // ====== 1. Creación de grupos ======
         ThreadGroup grupoPadre = new ThreadGroup("Grupo Padre");
         ThreadGroup subgrupo = new ThreadGroup(grupoPadre, "Grupo Hijo");
-        System.out.println("Grupo padre: " + grupoPadre.getName());
-        System.out.println("Subgrupo: " + subgrupo.getName());
-        System.out.println("Padre del subgrupo: " + subgrupo.getParent().getName());
+        System.out.println("RGG - Grupo padre: " + grupoPadre.getName());
+        System.out.println("RGG - Subgrupo: " + subgrupo.getName());
+        System.out.println("RGG - Padre del subgrupo: " + subgrupo.getParent().getName());
         // ====== 2. Creación de hilos dentro de los grupos ======
         Thread hilo1 = new Thread(grupoPadre, new Tarea("Tarea A"), "Hilo-A (padre)");
         Thread hilo2 = new Thread(grupoPadre, new Tarea("Tarea B"), "Hilo-B (padre)");
@@ -54,35 +54,35 @@ public class EjemploGruposHilos {
         // Esperamos un poco para asegurarnos de que ya han arrancado
         Thread.sleep(200);
         // ====== 4. Información de grupos mientras los hilos están activos ======
-        System.out.println("\n--- Info de grupos mientras los hilos están activos ---");
-        System.out.println("Hilos activos en grupoPadre (solo ese grupo): " + grupoPadre.activeCount());
-        System.out.println("Subgrupos activos dentro de grupoPadre: " + grupoPadre.activeGroupCount());
+        System.out.println("\nRGG - Info de grupos mientras los hilos están activos ---");
+        System.out.println("RGG - Hilos activos en grupoPadre (solo ese grupo): " + grupoPadre.activeCount());
+        System.out.println("RGG - Subgrupos activos dentro de grupoPadre: " + grupoPadre.activeGroupCount());
         // Lista de hilos dentro de grupoPadre (sin recorrer subgrupos)
         Thread[] listaHilos = new Thread[grupoPadre.activeCount()];
         int numHilos = grupoPadre.enumerate(listaHilos, false); // false = no incluir subgrupos
-        System.out.println("\nHilos encontrados en grupoPadre (sin subgrupos):");
+        System.out.println("\nRGG - Hilos encontrados en grupoPadre (sin subgrupos):");
         for (int i = 0; i < numHilos; i++) {
             Thread t = listaHilos[i];
             System.out.println("- " + t.getName() + " (grupo: " + t.getThreadGroup().getName() + ")");
         }
         // Lista de subgrupos dentro de grupoPadre
         ThreadGroup[] listaGrupos = new ThreadGroup[grupoPadre.activeGroupCount()];
-        int numGrupos = grupoPadre.enumerate(listaGrupos, false);
-        System.out.println("\nSubgrupos dentro de grupoPadre:");
+        int numGrupos = grupoPadre.enumerate(listaGrupos, true);
+        System.out.println("\nRGG - Subgrupos dentro de grupoPadre:");
         for (int i = 0; i < numGrupos; i++) {
             ThreadGroup tg = listaGrupos[i];
             System.out.println("- " + tg.getName());
         }
         // ====== 5. Prioridades a nivel de grupo ======
-        System.out.println("\n--- Prioridades y grupos ---");
-        System.out.println("Prioridad máxima inicial del subgrupo: " + subgrupo.getMaxPriority());
+        System.out.println("\nRGG - --- Prioridades y grupos ---");
+        System.out.println("RGG - Prioridad máxima inicial del subgrupo: " + subgrupo.getMaxPriority());
         subgrupo.setMaxPriority(4); // fijamos prioridad máxima del subgrupo en 4
-        System.out.println("Nueva prioridad máxima del subgrupo: " + subgrupo.getMaxPriority());
+        System.out.println("RGG - Nueva prioridad máxima del subgrupo: " + subgrupo.getMaxPriority());
         Thread hiloPrioridad = new Thread(subgrupo, new Tarea("Tarea Prioridad"), "Hilo-Prioridad");
         // Intentamos ponerle prioridad máxima global
         hiloPrioridad.setPriority(Thread.MAX_PRIORITY); // 10
-        System.out.println("Prioridad solicitada para Hilo-Prioridad: " + Thread.MAX_PRIORITY);
-        System.out.println("Prioridad real de Hilo-Prioridad (limitada por el grupo): "
+        System.out.println("RGG - Prioridad solicitada para Hilo-Prioridad: " + Thread.MAX_PRIORITY);
+        System.out.println("RGG - Prioridad real de Hilo-Prioridad (limitada por el grupo): "
                 + hiloPrioridad.getPriority());
         hiloPrioridad.start();
         // ====== 6. Esperar a que terminen los hilos ======
@@ -91,9 +91,9 @@ public class EjemploGruposHilos {
         hilo3.join();
         hiloPrioridad.join();
         // hiloLambda.join();
-        System.out.println("\n--- Info de grupos tras terminar los hilos ---");
-        System.out.println("Hilos activos en grupoPadre: " + grupoPadre.activeCount());
-        System.out.println("Subgrupos activos en grupoPadre: " + grupoPadre.activeGroupCount());
-        System.out.println("\nFin de main().");
+        System.out.println("\nRGG - --- Info de grupos tras terminar los hilos ---");
+        System.out.println("RGG - Hilos activos en grupoPadre: " + grupoPadre.activeCount());
+        System.out.println("RGG - Subgrupos activos en grupoPadre: " + grupoPadre.activeGroupCount());
+        System.out.println("\nRGG - Fin de main().");
     }
 }
