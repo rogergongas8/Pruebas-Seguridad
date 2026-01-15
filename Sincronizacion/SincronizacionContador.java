@@ -4,8 +4,8 @@ public class SincronizacionContador {
     // ======= RECURSO COMPARTIDO =======
     static class Contador {
         private int valor = 0;
-        // Versión SIN sincronizar (descomentar para probar)
 
+        // Versión SIN sincronizar (descomentar para probar)
         public void incrementar() {
             valor++; // NO es atómico
         }
@@ -14,6 +14,7 @@ public class SincronizacionContador {
         // public synchronized void incrementar() {
         // valor++; // ahora este incremento es atómico respecto a otros hilos
         // }
+
         public int getValor() {
             return valor;
         }
@@ -48,8 +49,8 @@ public class SincronizacionContador {
         t1.join();
         t2.join();
         long fin = System.currentTimeMillis();
-        System.out.println("Valor esperado: " + (2 * repeticiones));
-        System.out.println("Valor real:     " + contador.getValor());
-        System.out.println("Tiempo: " + (fin - inicio) + " ms");
+        System.out.println("RGG- Valor esperado: " + (2 * repeticiones));
+        System.out.println("RGG- Valor real:     " + contador.getValor());
+        System.out.println("RGG- Tiempo: " + (fin - inicio) + " ms");
     }
 }

@@ -9,27 +9,28 @@ public class ProductorConsumidorSimple {
         public synchronized void poner(int nuevoDato) throws InterruptedException {
             // Mientras esté lleno, el productor espera
             while (dato != null) {
-                System.out.println("Intento poner pero datos ya tiene datos");
+                System.out.println("RGG- Intento poner pero datos ya tiene datos");
                 wait(); // libera el monitor y se bloquea
             }
             // Llegados aquí, el buffer está vacío
             dato = nuevoDato;
-            System.out.println(Thread.currentThread().getName()
+            System.out.println("RGG- " + Thread.currentThread().getName()
                     + " ha producido: " + nuevoDato);
             // Despertamos a posibles consumidores
             notifyAll();
         }
 
-        public synchronized int tomar() throws InterruptedException {
+        public int tomar() throws InterruptedException {
             // Mientras esté vacío, el consumidor espera
             while (dato == null) {
-                System.out.println("Intengo tomar pero está vacio");
+                System.out.println("RGG- " + Thread.currentThread().getName()
+                        + " Intengo tomar pero está vacio");
                 wait(); // libera el monitor y se bloquea
             }
             // Llegados aquí, hay un dato disponible
             int resultado = dato;
             dato = null; // vaciamos el buffer
-            System.out.println(Thread.currentThread().getName()
+            System.out.println("RGG- " + Thread.currentThread().getName()
                     + " ha consumido: " + resultado);
             // Despertamos a posibles productores
             notifyAll();
@@ -53,7 +54,7 @@ public class ProductorConsumidorSimple {
                     buffer.poner(i);
                 }
             } catch (InterruptedException e) {
-                System.out.println("Productor interrumpido");
+                System.out.println("RGG- Productor interrumpido");
             }
         }
     }
@@ -74,7 +75,7 @@ public class ProductorConsumidorSimple {
                     Thread.sleep(2000); // simulamos procesamiento
                 }
             } catch (InterruptedException e) {
-                System.out.println("Consumidor interrumpido");
+                System.out.println("RGG- Consumidor interrumpido");
 
             }
         }
