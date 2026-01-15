@@ -17,10 +17,10 @@ public class ProductorConsumidorSimple {
             System.out.println("RGG- " + Thread.currentThread().getName()
                     + " ha producido: " + nuevoDato);
             // Despertamos a posibles consumidores
-            notifyAll();
+            notify();
         }
 
-        public int tomar() throws InterruptedException {
+        public synchronized int tomar() throws InterruptedException {
             // Mientras esté vacío, el consumidor espera
             while (dato == null) {
                 System.out.println("RGG- " + Thread.currentThread().getName()
@@ -33,7 +33,7 @@ public class ProductorConsumidorSimple {
             System.out.println("RGG- " + Thread.currentThread().getName()
                     + " ha consumido: " + resultado);
             // Despertamos a posibles productores
-            notifyAll();
+            notify();
             return resultado;
         }
     }
@@ -50,7 +50,7 @@ public class ProductorConsumidorSimple {
         public void run() {
             try {
                 for (int i = 1; i <= 10; i++) {
-                    Thread.sleep(1000); // simulamos trabajo
+                    Thread.sleep(2000); // simulamos trabajo
                     buffer.poner(i);
                 }
             } catch (InterruptedException e) {
