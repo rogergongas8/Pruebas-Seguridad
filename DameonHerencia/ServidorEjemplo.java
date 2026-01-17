@@ -13,7 +13,7 @@ public class ServidorEjemplo {
             ThreadGroup grupo = hilo.getThreadGroup();
             for (int i = 1; i <= 7; i++) {
                 System.out.println(
-                        "[" + "RGG" + grupo.getName() + "] "
+                        "RGG - [" + grupo.getName() + "] "
                         + hilo.getName()
                         + " (" + tipo + " - " + i + ")"
                 );
